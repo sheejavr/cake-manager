@@ -3,6 +3,7 @@ package com.waracle.cakemanager.exception;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,6 +13,9 @@ public class GlobalExceptionHandler {
     private String notAvailableMessage;
     @Value(value = "${cake.exists.message}")
     private String alreadyExistsMessage;
+
+    @Value(value = "${not.authorized.message}")
+    private String notAuthorizedMessge;
     @Value(value = "${cake.exception.message}")
     private String connectionException;
 
@@ -23,6 +27,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = CakeAlreadyPresentException.class)
     public ResponseEntity cakeAlreadyPresentException(CakeAlreadyPresentException cakeAlreadyPresentException) {
         return new ResponseEntity<String>(alreadyExistsMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity notAuthorizedException(AccessDeniedException accessDeniedException) {
+        return new ResponseEntity<String>(notAuthorizedMessge, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = Exception.class)

@@ -41,7 +41,7 @@ public class SpringSecurityConfig {
 
         UserDetails userDetails_admin = User.withUsername("admin")
                 .password(passwordEncoder.encode("password"))
-                .roles("ADMIN__ROLE")
+                .roles("ADMIN_ROLE","USER_ROLE")
                 .build();
 
         return new InMemoryUserDetailsManager(userDetails_user, userDetails_admin);
